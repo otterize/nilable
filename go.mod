@@ -1,4 +1,4 @@
-module github.com/otterize/nullable
+module github.com/otterize/nilable
 
 go 1.18
 
