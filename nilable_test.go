@@ -1,4 +1,4 @@
-package nullable
+package nilable
 
 import (
 	"encoding/json"
