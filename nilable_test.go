@@ -15,7 +15,7 @@ func TestNullable_IsNull_MarshalJSON(t *testing.T) {
 
 func TestNullable_IsNull_FromNil_MarshalJSON(t *testing.T) {
 	var nullStr *string = nil
-	nullableStr := From(nullStr)
+	var nullableStr Nilable[string] = FromPtr(nullStr)
 	marshalled, err := json.Marshal(nullableStr)
 	assert.NoError(t, err)
 	assert.JSONEq(t, "null", string(marshalled))

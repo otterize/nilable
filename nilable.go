@@ -11,12 +11,21 @@ type Nilable[T any] struct {
 	Set  bool
 }
 
+// From converts from non-pointer types to Nilable.
 func From[T any](item T) Nilable[T] {
 	reflectVal := reflect.ValueOf(item)
 	if reflectVal.Kind() == reflect.Ptr && reflectVal.IsNil() {
 		return Nilable[T]{Set: false}
 	}
 	return Nilable[T]{Item: item, Set: true}
+}
+
+// FromPtr converts from pointer types to Nilable.
+func FromPtr[T any](item *T) Nilable[T] {
+	if item == nil {
+		return Nilable[T]{Set: false}
+	}
+	return Nilable[T]{Item: *item, Set: true}
 }
 
 func (n Nilable[T]) MarshalJSON() ([]byte, error) {
