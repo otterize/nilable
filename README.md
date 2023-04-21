@@ -14,7 +14,7 @@ println(string(data)) // `"hello world"`
 
 ## From null JSON to value
 ```go
-var nilJson Nilable[string]
+var nilableString Nilable[string]
 json.Unmarshal([]byte("null"), &nilJson)
 println(nilJson.Set) // false
 ```
