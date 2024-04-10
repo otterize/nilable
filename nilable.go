@@ -14,7 +14,7 @@ type Nilable[T any] struct {
 // From converts from non-pointer types to Nilable.
 func From[T any](item T) Nilable[T] {
 	reflectVal := reflect.ValueOf(item)
-	if reflectVal.Kind() == reflect.Ptr && reflectVal.IsNil() {
+	if (reflectVal.Kind() == reflect.Ptr || reflectVal.Kind() == reflect.Slice || reflectVal.Kind() == reflect.Map) && reflectVal.IsNil() {
 		return Nilable[T]{Set: false}
 	}
 	return Nilable[T]{Item: item, Set: true}
