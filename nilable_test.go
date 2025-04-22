@@ -42,3 +42,34 @@ func TestNullable_IsNotNull_UnmarshalJSON(t *testing.T) {
 	assert.True(t, out.Set)
 	assert.Equal(t, "test", out.Item)
 }
+
+func TestNullable_Valuer(t *testing.T) {
+	nullableStr := From("test")
+	val, err := nullableStr.Value()
+	assert.NoError(t, err)
+	assert.Equal(t, "test", val)
+}
+
+func TestNullable_Scanner(t *testing.T) {
+	var out Nilable[string]
+	err := out.Scan(nil)
+	assert.NoError(t, err)
+	assert.False(t, out.Set)
+
+	err = out.Scan("test")
+	assert.NoError(t, err)
+	assert.True(t, out.Set)
+	assert.Equal(t, "test", out.Item)
+}
+
+func TestNullable_ValuerScannerBackAndForth(t *testing.T) {
+	nullableStr := From("test")
+	val, err := nullableStr.Value()
+	assert.NoError(t, err)
+
+	var out Nilable[string]
+	err = out.Scan(val)
+	assert.NoError(t, err)
+	assert.True(t, out.Set)
+	assert.Equal(t, "test", nullableStr.Item)
+}

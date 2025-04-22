@@ -2,7 +2,9 @@ package nilable
 
 import (
 	"bytes"
+	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"reflect"
 )
 
@@ -45,6 +47,28 @@ func (n *Nilable[T]) UnmarshalJSON(data []byte) error {
 	if err != nil {
 		return err
 	}
+	n.Set = true
+	return nil
+}
+
+func (n Nilable[T]) Value() (driver.Value, error) {
+	if !n.Set {
+		return nil, nil
+	}
+	return n.Item, nil
+}
+
+func (n *Nilable[T]) Scan(value any) error {
+	if value == nil {
+		n.Set = false
+		return nil
+	}
+
+	item, ok := value.(T)
+	if !ok {
+		return errors.New("failed to scan value into Nilable")
+	}
+	n.Item = item
 	n.Set = true
 	return nil
 }
